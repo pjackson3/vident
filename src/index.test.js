@@ -21,9 +21,30 @@ it("should createPage without options and not crash", () => {
 it("should renderPage without crashing", () => {
   const $ = setup(jQuery)
   const page = $().createPage()
-  $("<div><span /></div>").renderPage({
+  $("<div><span /></div>").find("span").renderPage({
     page: page,
-    element: "div",
+    data: {data: "testing testing..."}
+  })
+})
+
+it("should createComponent without crashing", () => {
+  const $ = setup(jQuery)
+  $().createComponent({
+    template: "<h1>{{content}}</h1>",
+    prerender: data => {data}
+  })
+})
+
+it("should createComponent without options and not crash", () => {
+  const $ = setup(jQuery)
+  $().createComponent()
+})
+
+it("should renderComponent without crashing", () => {
+  const $ = setup(jQuery)
+  const component = $().createComponent()
+  $("<div><span /></div>").find("span").renderComponent({
+    component: component,
     data: {data: "testing testing..."}
   })
 })

@@ -1,13 +1,17 @@
 import mustache from "mustache"
 
 export class Page {
-  constructor(template, $element, prerender = props => props ) {
+  constructor(template, $element, prerender=false) {
     this.template = template
-    this.prerender = prerender
+    if (prerender) {
+      this.prerender = prerender
+    }
     mustache.parse(this.template)
   }
-  render(props, $element) {
-    props = this.prerender(props)
+  render(props, $element){
+    if (this.prerender){
+      props = this.prerender(props)
+    }
     const text = mustache.render(this.template, props)
     $element.html(text)
   }

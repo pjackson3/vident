@@ -1,11 +1,12 @@
 import { Page } from "./page/index.js"
 import page from "page"
+import { Component } from "./component/index.js"
 
-export const setup = $ => {
-  $.fn.createPage = options => {
+export const setup = $ => { // Sets up the plugins and returns the modified jQuery object. This is 
+  $.fn.createPage = options => { // This extension creates a new page instance. This can be accessed by $().createPage
     const defaults = {
       template: "<h1>{{data}}</h1>",
-      prerender: props => {data: props}//eslint-disable-line no-unused-labels
+      prerender: (props) => {return {data: props}}
     }
     
     options = $.extend(defaults, options)
@@ -26,14 +27,36 @@ export const setup = $ => {
   
   $.fn.renderPage = options => {
     const defaults = {
-      element: "div",
       page: new Page(),
       data: {}
     }
     
     options = $.extend(defaults, options)
     
-    options.page.render(options.data, $(options.element))
+    options.page.render(options.data, $(this))
   }
+  
+  $.fn.createComponent = options => {
+    const defaults = {
+      template: "<h1>{{data}}</h1>",
+      prerender: false
+    }
+    
+    options = $.extend(defaults, options)
+    
+    return new Component(options.template, options.prerender)
+  },
+  
+  $.fn.renderComponent = options => {
+    const defaults = {
+      component: new Component(),
+      data: {}
+    }
+    
+    options = $.extend(defaults, options)
+    
+    options.component.render(options.data, $(this))
+  }
+  
   return $
 }
