@@ -11,7 +11,7 @@ const inputOptions = {
 }
 
 const outputOptions = {
-  format: "esm",
+  format: "cjs",
   file: path.join(__dirname, "..", "dist", "index.js")
 }
 

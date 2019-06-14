@@ -1,5 +1,11 @@
-import page from 'page';
-import { parse, render } from 'mustache';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var page = _interopDefault(require('page'));
+var mustache = require('mustache');
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -37,17 +43,17 @@ function () {
       this.prerender = prerender;
     }
 
-    parse(this.template);
+    mustache.parse(this.template);
   }
 
   _createClass(Component, [{
     key: "render",
-    value: function render$1(data) {
+    value: function render(data) {
       if (this.prerender) {
         data = this.prerender(data);
       }
 
-      return render(this.template, data);
+      return mustache.render(this.template, data);
     }
   }]);
 
@@ -96,4 +102,4 @@ var setup = function setup($) {
   return $;
 };
 
-export { setup };
+exports.setup = setup;
