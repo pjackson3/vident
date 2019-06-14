@@ -4,3 +4,45 @@ Vident (latin for "they see") is a component library for jQuery. It implements t
 
 ## Contributing
 Currently the most needed area is the documentation. Another thing I would like to add in later versions is a virtual DOM (like the ones in React and Angular).
+
+## Example
+```(html)
+/* index.html */
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<body>
+<div id="app">
+</div>
+<script src="path/to/compiled/script.js">
+</script>
+</body>
+</html>
+```
+
+```(javascript)
+// main.js
+import jQuery from "jquery"
+import { setup } from "vident"
+import template from "./template.mustache"
+
+const $ = setup(jQuery)
+
+const component = $().createComponent({
+  template: template
+})
+
+$("#app").renderComponent({
+  component: component,
+  data: {data: "Hello World!"}
+})
+```
+
+```(html)
+/* template.mustache */
+<h1>{{data}}</h1>
+```
+
+This will render the component onto the div with an id of app
