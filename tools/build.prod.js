@@ -16,6 +16,15 @@ const outputOptions = {
 }
 
 const build = async () => {
+  const packageJSON = await fs.readFile(path.join(__dirname, "..", "package.json"))
+  await fs.writeFile(path.join(__dirname, "..", "dist", "package.json"), packageJSON)
+  
+  const README = await fs.readFile(path.join(__dirname, "..", "README.md"))
+  await fs.writeFile(path.join(__dirname, "..", "dist", "README.md"), README)
+  
+  const LICENSE = await fs.readFile(path.join(__dirname, "..", "LICENSE"))
+  await fs.writeFile(path.join(__dirname, "..", "dist", "LICENSE"), LICENSE)
+  
   const bundle = await rollup(inputOptions)
   
   console.log(bundle.watchFiles)
@@ -31,9 +40,6 @@ const build = async () => {
   }
   
   await bundle.write(outputOptions)
-  
-  const packageJSON = await fs.readFile(path.join(__dirname, "..", "package.json"))
-  await fs.writeFile(path.join(__dirname, "..", "dist", "package.json"), packageJSON)
 }
 
 build()
