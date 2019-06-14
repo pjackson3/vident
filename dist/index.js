@@ -1,5 +1,5 @@
-import mustache, { parse, render } from 'mustache';
 import page from 'page';
+import { parse, render } from 'mustache';
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -22,38 +22,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
 }
-
-var Page =
-/*#__PURE__*/
-function () {
-  function Page(template, $element) {
-    var prerender = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-    _classCallCheck(this, Page);
-
-    this.template = template;
-
-    if (prerender) {
-      this.prerender = prerender;
-    }
-
-    mustache.parse(this.template);
-  }
-
-  _createClass(Page, [{
-    key: "render",
-    value: function render(props, $element) {
-      if (this.prerender) {
-        props = this.prerender(props);
-      }
-
-      var text = mustache.render(this.template, props);
-      $element.html(text);
-    }
-  }]);
-
-  return Page;
-}();
 
 var Component =
 /*#__PURE__*/
@@ -89,36 +57,25 @@ function () {
 var _this = undefined;
 var setup = function setup($) {
   // Sets up the plugins and returns the modified jQuery object. This is 
-  $.fn.createPage = function (options) {
-    // This extension creates a new page instance. This can be accessed by $().createPage
+  $.fn.createRoute = function (options) {
     var defaults = {
-      template: "<h1>{{data}}</h1>",
-      prerender: function prerender(props) {
-        return {
-          data: props
-        };
-      }
+      route: "/",
+      component: new Component("<h1>{{data}}</h1>")
     };
     options = $.extend(defaults, options);
-    return new Page(options.template, options.prerender);
+    page(options.route, options.component.render({}, $(_this)));
   };
 
   $.fn.route = function (options) {
     var defaults = {
-      route: "/",
-      page: new Page("<h1>{{data}}</h1>")
+      route: "/"
     };
     options = $.extend(defaults, options);
-    return page(options.route, options.page);
+    page(options.route);
   };
 
-  $.fn.renderPage = function (options) {
-    var defaults = {
-      page: new Page(),
-      data: {}
-    };
-    options = $.extend(defaults, options);
-    options.page.render(options.data, $(_this));
+  $.fn.loadRoutes = function () {
+    page();
   };
 
   $.fn.createComponent = function (options) {

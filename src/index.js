@@ -1,39 +1,30 @@
-import { Page } from "./page/index.js"
 import page from "page"
 import { Component } from "./component/index.js"
 
 export const setup = $ => { // Sets up the plugins and returns the modified jQuery object. This is 
-  $.fn.createPage = options => { // This extension creates a new page instance. This can be accessed by $().createPage
+  $.fn.createRoute = options => {
     const defaults = {
-      template: "<h1>{{data}}</h1>",
-      prerender: (props) => {return {data: props}}
+      route: "/",
+      component: new Component("<h1>{{data}}</h1>")
     }
     
     options = $.extend(defaults, options)
     
-    return new Page(options.template, options.prerender)
+    page(options.route, options.component.render({}, $(this)))
   }
   
   $.fn.route = options => {
     const defaults = {
-      route: "/",
-      page: new Page("<h1>{{data}}</h1>")
+      route: "/"
     }
     
     options = $.extend(defaults, options)
     
-    return page(options.route, options.page)
+    page(options.route)
   }
   
-  $.fn.renderPage = options => {
-    const defaults = {
-      page: new Page(),
-      data: {}
-    }
-    
-    options = $.extend(defaults, options)
-    
-    options.page.render(options.data, $(this))
+  $.fn.loadRoutes = () => {
+    page()
   }
   
   $.fn.createComponent = options => {
